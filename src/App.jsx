@@ -7,6 +7,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import { Input } from "antd";
 import Recommend from "./Recommend";
 import prefillJSON from "./data/prefill.json";
+import Sponsor from "./Sponsor";
 
 const Bubble = styled.p`
   background: #40a9ff;
@@ -24,7 +25,10 @@ const SUBMIT_BUTTON = "Submit";
 const RETRY_BUTTON = "Retry";
 
 const App = () => {
-  const [recomendations, setRecommendations] = useState(prefillJSON);
+  const [recomendations, setRecommendations] = useState(
+    prefillJSON.recommendations
+  );
+  const [sponsors, _] = useState(prefillJSON.sponsors);
   const [isClicked, setClicked] = useState(false);
   const [input, setInput] = useState("");
 
@@ -46,7 +50,13 @@ const App = () => {
         <Row>
           <Col xs="0" md="3" />
           <Col xs="12" md="6">
-            <h4>🚀🌈</h4>
+            <div style={{ marginBottom: 40 }}>
+              <h5>🚀🌈 Rekt-omend</h5>
+              <h6>
+                We will recommend better tech than you team lead, promise!
+              </h6>
+            </div>
+
             <Search
               size="large"
               allowClear
@@ -60,6 +70,9 @@ const App = () => {
               <div style={{ paddingTop: 20 }}>
                 <Bubble>The best choice for you is</Bubble>
                 <Bubble>
+                  {sponsors.map(sponsor => (
+                    <Sponsor {...sponsor} />
+                  ))}
                   {recomendations.map(recomendation => (
                     <Recommend {...recomendation} />
                   ))}

@@ -21,7 +21,7 @@ const Bubble = styled.p`
 `;
 
 const { Search } = Input;
-const SUBMIT_BUTTON = "Submit";
+const SUBMIT_BUTTON = "Show Me";
 const RETRY_BUTTON = "Retry";
 
 const App = () => {

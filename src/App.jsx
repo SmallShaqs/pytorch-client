@@ -9,15 +9,32 @@ import Recommend from "./Recommend";
 import prefillJSON from "./data/prefill.json";
 import Sponsor from "./Sponsor";
 
-const Bubble = styled.p`
+const Bubble = styled.div`
   background: #40a9ff;
   border-radius: 10px;
   color: #fff;
   clear: both;
-  padding: 10px;
   margin: 5px 0px;
+  padding: 10px;
+
   float: left;
   max-width: 300px;
+
+  opacity: 0;
+  animation-delay: ${({ delay }) => delay}s;
+  animation-duration: 0.5s;
+  animation-name: appear;
+  animation-fill-mode: forwards;
+
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
 `;
 
 const { Search } = Input;
@@ -25,20 +42,22 @@ const SUBMIT_BUTTON = "Show Me";
 const RETRY_BUTTON = "Retry";
 
 const App = () => {
-  const [recomendations, setRecommendations] = useState(
-    prefillJSON.recommendations
-  );
+  const [recomendations, setRecommendations] = useState([]);
   const [sponsors, _] = useState(prefillJSON.sponsors);
   const [isClicked, setClicked] = useState(false);
   const [input, setInput] = useState("");
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     try {
-      const response = await axios.get("https://shaqs-torch.herokuapp.com");
-      console.log(response);
+      setRecommendations([]);
+      setTimeout(() => {
+        setRecommendations(prefillJSON.recommendations);
+      }, 1000);
+      // const response = await axios.get("https://shaqs-torch.herokuapp.com");
+      // console.log(response);
 
       setClicked(true);
-      setRecommendations(response);
+      // setRecommendations(response);
     } catch (err) {
       console.error(err);
     }
@@ -56,7 +75,6 @@ const App = () => {
                 We will recommend better tech than you team lead, promise!
               </h6>
             </div>
-
             <Search
               size="large"
               allowClear
@@ -66,15 +84,15 @@ const App = () => {
               onSearch={onSubmit}
               onChange={value => setInput(value.target.value)}
             />
-            {recomendations.length ? (
-              <div style={{ paddingTop: 20 }}>
-                <Bubble>The best choice for you is</Bubble>
-                <Bubble>
+            {recomendations.length && isClicked ? (
+              <div style={{ paddingTop: 10 }}>
+                <Bubble delay="0.5">The best choice for you is</Bubble>
+                <Bubble delay="1.5">
                   {sponsors.map(sponsor => (
-                    <Sponsor {...sponsor} />
+                    <Sponsor key={sponsor.name} {...sponsor} />
                   ))}
                   {recomendations.map(recomendation => (
-                    <Recommend {...recomendation} />
+                    <Recommend key={recomendation.name} {...recomendation} />
                   ))}
                 </Bubble>
               </div>

@@ -30,7 +30,7 @@ const Recommend = ({ name, keywords, logo }) => (
     </LogoWithTitle>
     <TagContainer>
       {keywords.map(keyword => (
-        <Tag color="gold">{keyword}</Tag>
+        <Tag key={keyword} color="gold">{keyword}</Tag>
       ))}
     </TagContainer>
   </RecommendContainer>
